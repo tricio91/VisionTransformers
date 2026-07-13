@@ -1,0 +1,15 @@
+# Training / export environment
+torch>=2.0
+torchvision
+timm>=0.9.0
+numpy
+pillow
+pyyaml
+scikit-learn
+matplotlib
+seaborn
+tqdm
+
+# ONNX export
+onnx>=1.15
+onnxruntime>=1.17

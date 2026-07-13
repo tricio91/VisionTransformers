@@ -1,0 +1,50 @@
+# ============================================================
+#  Configuration for NEU Surface Defect Classification
+#  All hyperparameters live here — never edit the code to tune.
+# ============================================================
+
+data:
+  # Root folder that contains one subfolder per class (ImageFolder layout).
+  # Example expected layout after downloading the NEU dataset from Kaggle:
+  #   data/NEU-CLS/
+  #       crazing/           *.bmp
+  #       inclusion/         *.bmp
+  #       patches/           *.bmp
+  #       pitted_surface/    *.bmp
+  #       rolled-in_scale/   *.bmp
+  #       scratches/         *.bmp
+  data_dir: "data/NEU-CLS"
+  val_split: 0.15          # fraction held out for validation
+  test_split: 0.15         # fraction held out for the final test report
+  num_workers: 4
+  seed: 42
+
+model:
+  # Any ViT-style backbone from `timm` works. vit_small is a good default:
+  # strong accuracy, trains on a single mid-range GPU.
+  name: "vit_small_patch16_224"
+  pretrained: true
+  img_size: 224            # NEU images are 200x200 grayscale -> resized & 3-channel
+  num_classes: 6
+  dropout: 0.1             # 10% dropout before the classifier head (regularization)
+
+train:
+  batch_size: 32
+  epochs: 10
+  patience: 7              # early stopping
+  unfreeze_epoch: 5        # phase 1 -> phase 2 switch
+  lr_head: 0.001
+  lr_backbone: 0.00002
+  weight_decay: 0.05
+  warmup_epochs: 3
+  label_smoothing: 0.1
+  use_ema: true
+  ema_decay: 0.999
+  mixed_precision: true    # FP16 on CUDA
+  class_weights: true      # auto-balance if classes are imbalanced
+
+output:
+  ckpt_dir: "checkpoints"
+  ckpt_name: "best_model.pt"
+  onnx_name: "neu_defect_vit.onnx"
+  results_dir: "results"   # confusion matrix, metrics, curves

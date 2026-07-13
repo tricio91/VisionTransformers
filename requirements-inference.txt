@@ -1,0 +1,5 @@
+# Lightweight PRODUCTION runtime — no PyTorch, no timm.
+# This is all you need to serve the exported ONNX model.
+onnxruntime>=1.17
+numpy
+pillow
