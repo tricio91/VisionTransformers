@@ -75,7 +75,7 @@ eyeball what the model got right and where it slipped.
 ## Project layout
 
 ```
-neu-defect-classifier/
+visiontransformers/
 ├── configs/config.yaml         # every hyperparameter lives here
 ├── src/
 │   ├── data.py                 # datasets, transforms, class weights
